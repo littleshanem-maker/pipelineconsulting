@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Consulting | Project Management for Oil & Gas</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --near-black: #141414;
+            --dark-gray: #1e1e1e;
+            --mid-gray: #6b6b6b;
+            --light-gray: #a8a8a8;
+            --off-white: #e8e8e8;
+            --white: #f5f5f5;
+            --pure-white: #ffffff;
+            --accent: #d4d4d4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- NAV --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            color: var(--pure-white);
+        }
+
+        .nav-logo span {
+            font-weight: 400;
+            color: var(--light-gray);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--pure-white);
+        }
+
+        .nav-cta {
+            padding: 0.6rem 1.6rem;
+            background: var(--pure-white);
+            color: var(--black) !important;
+            font-weight: 700 !important;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--off-white) !important;
+            transform: translateY(-1px);
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .mobile-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            position: relative;
+            padding: 8rem 4rem 4rem;
+            overflow: hidden;
+            gap: 2rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse 80% 60% at 70% 40%, rgba(40, 40, 40, 0.5) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 80% at 10% 80%, rgba(30, 30, 30, 0.4) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+            background-size: 80px 80px;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 640px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- HERO ILLUSTRATION --- */
+        .hero-visual {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.6s forwards;
+        }
+
+        .hero-illustration {
+            width: 100%;
+            max-width: 560px;
+            height: auto;
+            filter: drop-shadow(0 0 60px rgba(255,255,255,0.03));
+        }
+
+        /* Pipeline flow animation */
+        @keyframes flowDash {
+            to { stroke-dashoffset: -40; }
+        }
+        @keyframes flowDashReverse {
+            to { stroke-dashoffset: 40; }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.4; }
+        }
+        @keyframes nodeGlow {
+            0%, 100% { opacity: 0.5; r: 3; }
+            50% { opacity: 1; r: 4.5; }
+        }
+        @keyframes gaugeNeedle {
+            0%, 100% { transform: rotate(-20deg); }
+            50% { transform: rotate(25deg); }
+        }
+        @keyframes dataScroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-12px); opacity: 0; }
+        }
+
+        .pipe-flow {
+            stroke-dasharray: 12 8;
+            animation: flowDash 2s linear infinite;
+        }
+        .pipe-flow-reverse {
+            stroke-dasharray: 12 8;
+            animation: flowDashReverse 2.5s linear infinite;
+        }
+        .glow-pulse {
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+        .glow-pulse-delay {
+            animation: pulseGlow 3s ease-in-out 1.5s infinite;
+        }
+        .node-pulse {
+            animation: nodeGlow 2.5s ease-in-out infinite;
+        }
+        .node-pulse-delay {
+            animation: nodeGlow 2.5s ease-in-out 0.8s infinite;
+        }
+        .node-pulse-delay2 {
+            animation: nodeGlow 2.5s ease-in-out 1.6s infinite;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--light-gray);
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.2s forwards;
+        }
+
+        .hero-tag::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--mid-gray);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+            color: var(--pure-white);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.4s forwards;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--light-gray);
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--light-gray);
+            max-width: 560px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.6s forwards;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.8s forwards;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.2rem;
+            background: var(--pure-white);
+            color: var(--black);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--off-white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,255,255,0.08);
+        }
+
+        .btn-primary svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover svg {
+            transform: translateX(3px);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.2rem;
+            background: transparent;
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 1s forwards;
+        }
+
+        .stat {
+            text-align: left;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--pure-white);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+            margin-top: 0.4rem;
+        }
+
+        /* --- DIVIDER --- */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.08) 80%, transparent);
+        }
+
+        /* --- SERVICES --- */
+        .services {
+            padding: 7rem 4rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+            gap: 2rem;
+        }
+
+        .section-tag {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--pure-white);
+        }
+
+        .section-desc {
+            max-width: 400px;
+            color: var(--mid-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .service-card {
+            background: var(--black);
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .service-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 2.5rem;
+            right: 2.5rem;
+            height: 0;
+            background: var(--pure-white);
+            transition: height 0.3s ease;
+        }
+
+        .service-card:hover {
+            background: var(--near-black);
+        }
+
+        .service-card:hover::after {
+            height: 2px;
+        }
+
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .service-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--light-gray);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--pure-white);
+        }
+
+        .service-card p {
+            font-size: 0.88rem;
+            line-height: 1.65;
+            color: var(--mid-gray);
+        }
+
+        /* --- EXPERTISE --- */
+        .expertise {
+            padding: 7rem 4rem;
+            background: var(--near-black);
+        }
+
+        .expertise-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        .expertise-left .section-tag {
+            margin-bottom: 1rem;
+        }
+
+        .expertise-left .section-title {
+            margin-bottom: 1.5rem;
+        }
+
+        .expertise-left p {
+            color: var(--light-gray);
+            font-size: 1rem;
+            line-height: 1.75;
+            margin-bottom: 1.5rem;
+        }
+
+        .standard-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 1rem;
+        }
+
+        .standard-badge .badge-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+        }
+
+        .standard-badge .badge-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--pure-white);
+        }
+
+        .expertise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .expertise-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .expertise-item:first-child {
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .expertise-item:hover {
+            padding-left: 1rem;
+        }
+
+        .expertise-item h4 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--off-white);
+        }
+
+        .expertise-item span {
+            font-size: 0.75rem;
+            color: var(--mid-gray);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* --- GOVT PROJECTS --- */
+        .govt-projects {
+            padding: 7rem 4rem;
+            background: var(--near-black);
+        }
+
+        .govt-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3.5rem;
+            align-items: start;
+        }
+
+        .govt-intro p {
+            color: var(--light-gray);
+            font-size: 1rem;
+            line-height: 1.75;
+            margin-bottom: 1rem;
+        }
+
+        .govt-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .govt-card {
+            background: var(--near-black);
+            padding: 2rem 2.5rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .govt-card:hover {
+            background: var(--dark-gray);
+        }
+
+        .govt-card-icon {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+
+        .govt-card-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--light-gray);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .govt-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--off-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .govt-card p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--mid-gray);
+        }
+
+        .client-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .client-tag {
+            padding: 0.45rem 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            color: var(--light-gray);
+        }
+
+        /* --- SECTORS --- */
+        .sectors {
+            padding: 7rem 4rem;
+        }
+
+        .sectors-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .sector-card {
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sector-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .sector-card:hover::before {
+            opacity: 1;
+        }
+
+        .sector-card:hover {
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-4px);
+        }
+
+        .sector-icon {
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+            opacity: 0.7;
+        }
+
+        .sector-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--off-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .sector-card p {
+            font-size: 0.8rem;
+            color: var(--mid-gray);
+            line-height: 1.5;
+        }
+
+        /* --- CTA --- */
+        .cta-section {
+            padding: 7rem 4rem;
+            background: var(--near-black);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-section .section-tag {
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-section .section-title {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .cta-section p {
+            color: var(--mid-gray);
+            font-size: 1rem;
+            line-height: 1.7;
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .cta-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 3rem 4rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--off-white);
+        }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            color: var(--mid-gray);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            font-size: 0.8rem;
+            color: var(--mid-gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            nav {
+                padding: 1.2rem 2rem;
+            }
+            .hero, .services, .expertise, .sectors, .govt-projects, .cta-section {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .hero-visual {
+                max-width: 450px;
+                margin: 0 auto;
+            }
+            footer {
+                padding: 2rem;
+            }
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .sectors-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .expertise-layout {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .govt-layout {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 1.5rem 2rem;
+                gap: 1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.06);
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .mobile-toggle {
+                display: flex;
+            }
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            .hero-visual {
+                max-width: 340px;
+            }
+            .hero-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .sectors-grid {
+                grid-template-columns: 1fr;
+            }
+            .cta-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            footer {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .footer-left {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="index.html" class="nav-logo" style="text-decoration:none;">Pipeline <span>Consulting</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="services.html">Services</a></li>
+            <li><a href="expertise.html">Expertise</a></li>
+            <li><a href="sectors.html">Sectors</a></li>
+            <li><a href="mailto:little.shanem@gmail.com" class="nav-cta">Get in Touch</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-grid-bg"></div>
+        <div class="hero-content">
+            <div class="hero-tag">Project Management &bull; Oil & Gas</div>
+            <h1>Precision project delivery for <em>critical&nbsp;infrastructure</em></h1>
+            <p class="hero-sub">Specialist project management and engineering services for oil and gas pipelines, compressor stations, pumping stations, and live facility works across Australia.</p>
+            <div class="hero-actions">
+                <a href="mailto:little.shanem@gmail.com?subject=Project%20Enquiry%20-%20Pipeline%20Consulting" class="btn-primary">
+                    Discuss Your Project
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                </a>
+                <a href="services.html" class="btn-secondary">Our Services</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">AS 2885</div>
+                    <div class="stat-label">Certified Expertise</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <svg class="hero-illustration" viewBox="0 0 520 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background frame -->
+                <rect x="10" y="10" width="500" height="460" rx="2" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                
+                <!-- Grid lines (blueprint feel) -->
+                <line x1="10" y1="120" x2="510" y2="120" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+                <line x1="10" y1="240" x2="510" y2="240" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+                <line x1="10" y1="360" x2="510" y2="360" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+                <line x1="130" y1="10" x2="130" y2="470" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+                <line x1="260" y1="10" x2="260" y2="470" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+                <line x1="390" y1="10" x2="390" y2="470" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+
+                <!-- === MAIN PIPELINE ROUTE (thick horizontal) === -->
+                <!-- Pipeline outer casing -->
+                <path d="M 40 240 H 200 Q 220 240 220 220 V 140 Q 220 120 240 120 H 400 Q 420 120 420 140 V 200 Q 420 220 440 220 H 490" stroke="rgba(255,255,255,0.12)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Pipeline inner -->
+                <path d="M 40 240 H 200 Q 220 240 220 220 V 140 Q 220 120 240 120 H 400 Q 420 120 420 140 V 200 Q 420 220 440 220 H 490" stroke="rgba(255,255,255,0.06)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Flow animation line -->
+                <path d="M 40 240 H 200 Q 220 240 220 220 V 140 Q 220 120 240 120 H 400 Q 420 120 420 140 V 200 Q 420 220 440 220 H 490" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pipe-flow"/>
+
+                <!-- === SECONDARY PIPELINE (lower branch) === -->
+                <path d="M 130 240 V 340 Q 130 360 150 360 H 350 Q 370 360 370 340 V 300" stroke="rgba(255,255,255,0.10)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 130 240 V 340 Q 130 360 150 360 H 350 Q 370 360 370 340 V 300" stroke="rgba(255,255,255,0.05)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 130 240 V 340 Q 130 360 150 360 H 350 Q 370 360 370 340 V 300" stroke="rgba(255,255,255,0.28)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="pipe-flow-reverse"/>
+
+                <!-- === COMPRESSOR STATION (top-left box) === -->
+                <rect x="50" y="50" width="110" height="75" rx="3" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="rgba(255,255,255,0.02)"/>
+                <text x="105" y="42" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-family="DM Sans, sans-serif" font-size="8" letter-spacing="1.5" text-transform="uppercase">COMPRESSOR STN</text>
+                <!-- Compressor turbine symbol -->
+                <circle cx="85" cy="80" r="16" stroke="rgba(255,255,255,0.2)" stroke-width="1" fill="none"/>
+                <circle cx="85" cy="80" r="8" stroke="rgba(255,255,255,0.15)" stroke-width="1" fill="none"/>
+                <circle cx="85" cy="80" r="2.5" fill="rgba(255,255,255,0.3)" class="node-pulse"/>
+                <!-- Blades -->
+                <line x1="85" y1="64" x2="85" y2="72" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                <line x1="85" y1="88" x2="85" y2="96" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                <line x1="69" y1="80" x2="77" y2="80" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                <line x1="93" y1="80" x2="101" y2="80" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                <!-- Status indicator -->
+                <rect x="120" y="65" width="28" height="14" rx="2" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                <text x="134" y="75" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="DM Sans, monospace" font-size="7">RUN</text>
+                <!-- Connection pipe from compressor to main -->
+                <path d="M 105 125 V 160 Q 105 170 115 170 H 130 V 240" stroke="rgba(255,255,255,0.1)" stroke-width="6" stroke-linecap="round"/>
+                <path d="M 105 125 V 160 Q 105 170 115 170 H 130 V 240" stroke="rgba(255,255,255,0.25)" stroke-width="1" class="pipe-flow" stroke-linecap="round"/>
+
+                <!-- === PUMPING STATION (right side) === -->
+                <rect x="340" y="250" width="120" height="80" rx="3" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="rgba(255,255,255,0.02)"/>
+                <text x="400" y="246" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-family="DM Sans, sans-serif" font-size="8" letter-spacing="1.5">PUMP STN</text>
+                <!-- Pump symbol -->
+                <circle cx="380" cy="290" r="14" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" fill="none"/>
+                <polygon points="380,278 388,296 372,296" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+                <circle cx="380" cy="290" r="3" fill="rgba(255,255,255,0.3)" class="node-pulse-delay"/>
+                <!-- Pressure readout -->
+                <rect x="405" y="268" width="42" height="22" rx="2" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                <text x="426" y="277" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-family="DM Sans, sans-serif" font-size="6">PRESSURE</text>
+                <text x="426" y="286" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-family="DM Sans, monospace" font-size="8">8.2 MPa</text>
+                <!-- Flow readout -->
+                <rect x="405" y="296" width="42" height="20" rx="2" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                <text x="426" y="305" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-family="DM Sans, sans-serif" font-size="6">FLOW</text>
+                <text x="426" y="313" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-family="DM Sans, monospace" font-size="8">142 m³/h</text>
+
+                <!-- === VALVE SYMBOLS on main pipeline === -->
+                <!-- Valve 1 -->
+                <g transform="translate(90, 232)">
+                    <polygon points="0,0 8,8 0,16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                    <polygon points="16,0 8,8 16,16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                    <line x1="8" y1="0" x2="8" y2="-6" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                    <rect x="4" y="-10" width="8" height="4" rx="1" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                </g>
+                <!-- Valve 2 -->
+                <g transform="translate(310, 112)">
+                    <polygon points="0,0 8,8 0,16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                    <polygon points="16,0 8,8 16,16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                    <line x1="8" y1="0" x2="8" y2="-6" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                    <rect x="4" y="-10" width="8" height="4" rx="1" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                </g>
+                <!-- Valve 3 on lower branch -->
+                <g transform="translate(240, 352)">
+                    <polygon points="0,0 8,8 0,16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                    <polygon points="16,0 8,8 16,16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                </g>
+
+                <!-- === JUNCTION NODES (glowing dots) === -->
+                <circle cx="40" cy="240" r="4" fill="rgba(255,255,255,0.4)" class="node-pulse"/>
+                <circle cx="40" cy="240" r="10" fill="rgba(255,255,255,0.06)" class="glow-pulse"/>
+                <circle cx="220" cy="240" r="3" fill="rgba(255,255,255,0.35)" class="node-pulse-delay"/>
+                <circle cx="220" cy="120" r="3" fill="rgba(255,255,255,0.35)" class="node-pulse-delay2"/>
+                <circle cx="420" cy="120" r="3" fill="rgba(255,255,255,0.35)" class="node-pulse"/>
+                <circle cx="490" cy="220" r="4" fill="rgba(255,255,255,0.4)" class="node-pulse-delay"/>
+                <circle cx="490" cy="220" r="10" fill="rgba(255,255,255,0.06)" class="glow-pulse-delay"/>
+
+                <!-- === GAUGE / METER (mid pipeline) === -->
+                <g transform="translate(280, 60)">
+                    <circle cx="0" cy="0" r="22" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="rgba(255,255,255,0.015)"/>
+                    <circle cx="0" cy="0" r="18" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" fill="none"/>
+                    <!-- Gauge ticks -->
+                    <line x1="-14" y1="-4" x2="-10" y2="-4" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+                    <line x1="-10" y1="-12" x2="-7" y2="-10" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+                    <line x1="0" y1="-16" x2="0" y2="-12" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+                    <line x1="10" y1="-12" x2="7" y2="-10" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+                    <line x1="14" y1="-4" x2="10" y2="-4" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+                    <!-- Needle -->
+                    <line x1="0" y1="2" x2="4" y2="-12" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round" style="transform-origin: 0px 2px; animation: gaugeNeedle 5s ease-in-out infinite"/>
+                    <circle cx="0" cy="2" r="2" fill="rgba(255,255,255,0.35)"/>
+                    <!-- Connection down to pipe -->
+                    <line x1="0" y1="22" x2="0" y2="52" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="3 3"/>
+                </g>
+
+                <!-- === DATA PANEL (bottom-right) === -->
+                <rect x="390" y="390" width="110" height="70" rx="3" stroke="rgba(255,255,255,0.1)" stroke-width="1" fill="rgba(255,255,255,0.02)"/>
+                <text x="400" y="408" fill="rgba(255,255,255,0.2)" font-family="DM Sans, sans-serif" font-size="7" letter-spacing="1">SYSTEM STATUS</text>
+                <line x1="390" y1="414" x2="500" y2="414" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+                <text x="400" y="428" fill="rgba(255,255,255,0.15)" font-family="monospace" font-size="7">INTEGRITY</text>
+                <text x="488" y="428" text-anchor="end" fill="rgba(255,255,255,0.4)" font-family="monospace" font-size="7">PASS</text>
+                <text x="400" y="440" fill="rgba(255,255,255,0.15)" font-family="monospace" font-size="7">AS 2885</text>
+                <text x="488" y="440" text-anchor="end" fill="rgba(255,255,255,0.4)" font-family="monospace" font-size="7">COMPLIANT</text>
+                <text x="400" y="452" fill="rgba(255,255,255,0.15)" font-family="monospace" font-size="7">CLASS</text>
+                <text x="488" y="452" text-anchor="end" fill="rgba(255,255,255,0.4)" font-family="monospace" font-size="7">T1 / T2</text>
+
+                <!-- === DIMENSION LINE (bottom) === -->
+                <line x1="40" y1="430" x2="330" y2="430" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                <line x1="40" y1="424" x2="40" y2="436" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                <line x1="330" y1="424" x2="330" y2="436" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                <text x="185" y="445" text-anchor="middle" fill="rgba(255,255,255,0.12)" font-family="DM Sans, sans-serif" font-size="7" letter-spacing="1">PIPELINE ROUTE — SCHEMATIC</text>
+
+                <!-- === COORDINATE MARKERS === -->
+                <text x="20" y="26" fill="rgba(255,255,255,0.08)" font-family="monospace" font-size="7">KP 0.0</text>
+                <text x="460" y="26" fill="rgba(255,255,255,0.08)" font-family="monospace" font-size="7">KP 42.5</text>
+            </svg>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- SERVICES -->
+    <section class="services" id="services">
+        <div class="section-header reveal">
+            <div>
+                <div class="section-tag">What We Do</div>
+                <h2 class="section-title">End-to-end project<br>management services</h2>
+            </div>
+            <p class="section-desc">From feasibility through to commissioning, we provide the rigour and oversight your pipeline and facility projects demand.</p>
+        </div>
+        <div class="services-grid reveal">
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 5h6M9 14l2 2 4-4"/></svg>
+                </div>
+                <h3>Quality Management</h3>
+                <p>Comprehensive quality assurance and control systems ensuring compliance with AS 2885 and project-specific requirements throughout delivery.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/></svg>
+                </div>
+                <h3>Cost Control</h3>
+                <p>Rigorous cost estimation, tracking, and forecasting to protect budgets and deliver transparent financial reporting to stakeholders.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </div>
+                <h3>Schedule Management</h3>
+                <p>Detailed schedule development, critical path analysis, and proactive management to keep your project milestones on track.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <h3>Risk &amp; Safety</h3>
+                <p>Systematic risk identification and mitigation planning integrated with robust safety management throughout the project lifecycle.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                </div>
+                <h3>Stakeholder Management</h3>
+                <p>Strategic stakeholder engagement and communication management ensuring alignment across owners, contractors, and regulatory bodies.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <h3>Project Engineering</h3>
+                <p>Technical oversight and engineering coordination across disciplines, from design review through construction support and commissioning.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- EXPERTISE -->
+    <section class="expertise" id="expertise">
+        <div class="expertise-layout">
+            <div class="expertise-left reveal">
+                <div class="section-tag">Our Edge</div>
+                <h2 class="section-title">Deep domain expertise where it matters most</h2>
+                <p>With over 15 years of hands-on experience in project engineering and management across the oil and gas sector, Pipeline Consulting brings the technical depth and industry knowledge that general consultancies simply cannot match.</p>
+                <p>Our practice is built on thorough understanding of Australian pipeline standards, construction methodologies, and the regulatory landscape governing critical energy infrastructure.</p>
+                <div class="standard-badge">
+                    <div>
+                        <div class="badge-label">Core Standard</div>
+                        <div class="badge-value">AS 2885</div>
+                    </div>
+                </div>
+            </div>
+            <div class="expertise-list reveal">
+                <div class="expertise-item">
+                    <h4>Oil &amp; Gas Transmission Pipelines</h4>
+                    <span>Primary</span>
+                </div>
+                <div class="expertise-item">
+                    <h4>Compressor Station Civil Works</h4>
+                    <span>Facilities</span>
+                </div>
+                <div class="expertise-item">
+                    <h4>Pumping Station Construction</h4>
+                    <span>Facilities</span>
+                </div>
+                <div class="expertise-item">
+                    <h4>Live Facility Modifications</h4>
+                    <span>Brownfield</span>
+                </div>
+                <div class="expertise-item">
+                    <h4>AS 2885 Compliance &amp; Advisory</h4>
+                    <span>Standards</span>
+                </div>
+                <div class="expertise-item">
+                    <h4>Greenfield &amp; Brownfield Delivery</h4>
+                    <span>All Phases</span>
+                </div>
+                <div class="expertise-item">
+                    <h4>Multi-discipline Coordination</h4>
+                    <span>Engineering</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- SECTORS -->
+    <section class="sectors" id="sectors">
+        <div class="reveal">
+            <div class="section-tag">Sectors</div>
+            <h2 class="section-title">Industries we serve</h2>
+        </div>
+        <div class="sectors-grid reveal">
+            <div class="sector-card">
+                <div class="sector-icon">⬡</div>
+                <h3>Gas Transmission</h3>
+                <p>High-pressure gas pipeline construction and management</p>
+            </div>
+            <div class="sector-card">
+                <div class="sector-icon">◉</div>
+                <h3>Oil &amp; Liquids</h3>
+                <p>Crude and product pipeline delivery and oversight</p>
+            </div>
+            <div class="sector-card">
+                <div class="sector-icon">⬢</div>
+                <h3>Processing Facilities</h3>
+                <p>Compressor and pumping station civil works</p>
+            </div>
+            <div class="sector-card">
+                <div class="sector-icon">◈</div>
+                <h3>Live Operations</h3>
+                <p>Brownfield modifications on operational assets</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- GOVERNMENT & INFRASTRUCTURE PROJECTS -->
+    <section class="govt-projects" id="government">
+        <div class="reveal">
+            <div class="section-tag">Government &amp; Public Infrastructure</div>
+            <h2 class="section-title">Trusted on Australia's<br>major infrastructure programs</h2>
+        </div>
+        <div class="govt-layout">
+            <div class="govt-intro reveal">
+                <p>Pipeline Consulting has extensive experience delivering project management services on government-funded infrastructure programs where live pipeline assets intersect with major civil works. These projects demand rigorous safety management, detailed stakeholder coordination, and deep knowledge of pipeline protection requirements under AS 2885.</p>
+                <p>From rail corridor upgrades to arterial road duplications, we've managed the critical interface between new construction and existing high-pressure pipeline assets — ensuring public safety, regulatory compliance, and zero disruption to energy supply.</p>
+                <div class="client-tags">
+                    <span class="client-tag">State Government</span>
+                    <span class="client-tag">Rail Authorities</span>
+                    <span class="client-tag">Road Authorities</span>
+                    <span class="client-tag">Pipeline Operators</span>
+                    <span class="client-tag">Tier 1 Contractors</span>
+                </div>
+            </div>
+            <div class="govt-cards reveal">
+                <div class="govt-card">
+                    <div class="govt-card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14M21 7v14M6 7V4h4v3M14 7V4h4v3M6 7h12M9 21v-4h6v4M12 11v4"/><path d="M3 7l9-4 9 4"/></svg>
+                    </div>
+                    <div>
+                        <h4>Rail Level Crossing Removals</h4>
+                        <p>Project management of pipeline protection and relocation works during level crossing removal programs, coordinating between rail alliances, pipeline licensees, and construction contractors to maintain asset integrity throughout grade separation works.</p>
+                    </div>
+                </div>
+                <div class="govt-card">
+                    <div class="govt-card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 16l4-8 4 8M6 12h4M16 8h2a2 2 0 012 2v1a2 2 0 01-2 2h-2V8zm0 5h2.5a2.5 2.5 0 010 5H16v-5z"/><path d="M2 20h20"/></svg>
+                    </div>
+                    <div>
+                        <h4>Major Road Project Works</h4>
+                        <p>Management of pipeline interface works on arterial road upgrades, freeway extensions, and intersection upgrades — including pipeline lowering, encasement, and third-party protection measures in live traffic and construction environments.</p>
+                    </div>
+                </div>
+                <div class="govt-card">
+                    <div class="govt-card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    </div>
+                    <div>
+                        <h4>Live Pipeline Infrastructure</h4>
+                        <p>Specialist management of works in proximity to and directly on operational high-pressure gas and liquids pipelines, including hot tapping, pipeline modifications, cathodic protection upgrades, and integrity management programs on government-regulated assets.</p>
+                    </div>
+                </div>
+                <div class="govt-card">
+                    <div class="govt-card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <div>
+                        <h4>Safety &amp; Compliance Management</h4>
+                        <p>Development and implementation of pipeline safety management studies, construction safety management plans, and AS 2885.1 safety assessments for government infrastructure corridors where pipeline and public works intersect.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- CTA -->
+    <section class="cta-section" id="contact">
+        <div class="reveal">
+            <div class="section-tag">Start a Conversation</div>
+            <h2 class="section-title">Ready to discuss your<br>next pipeline project?</h2>
+            <p>Whether you need project management support for a new build, brownfield modification, or facility upgrade, we're here to help deliver it right.</p>
+            <div class="cta-actions">
+                <a href="mailto:little.shanem@gmail.com?subject=Project%20Enquiry%20-%20Pipeline%20Consulting" class="btn-primary">
+                    Get in Touch
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                </a>
+                <a href="mailto:little.shanem@gmail.com?subject=Project%20Enquiry%20-%20Pipeline%20Consulting" class="btn-secondary">shane@pipelineconsulting.com.au</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-left">
+            <div class="footer-brand">Pipeline Consulting</div>
+            <span class="footer-copy">&copy; 2025 Pipeline Consulting. All rights reserved.</span>
+        </div>
+        <ul class="footer-links">
+            <li><a href="services.html">Services</a></li>
+            <li><a href="expertise.html">Expertise</a></li>
+            <li><a href="sectors.html">Sectors</a></li>
+            <li><a href="mailto:little.shanem@gmail.com">Contact</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        // Mobile nav toggle
+        document.getElementById('mobileToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // Close mobile nav on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, i * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        reveals.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

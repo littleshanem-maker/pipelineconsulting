@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expertise | Pipeline Consulting</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a; --near-black: #141414; --dark-gray: #1e1e1e;
+            --mid-gray: #6b6b6b; --light-gray: #a8a8a8; --off-white: #e8e8e8;
+            --white: #f5f5f5; --pure-white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center; background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; letter-spacing: 0.02em; color: var(--pure-white); text-decoration: none; }
+        .nav-logo span { font-weight: 400; color: var(--light-gray); }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a { color: var(--light-gray); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: var(--pure-white); }
+        .nav-cta { padding: 0.6rem 1.6rem; background: var(--pure-white); color: var(--black) !important; font-weight: 700 !important; border: none; cursor: pointer; transition: all 0.3s ease; }
+        .nav-cta:hover { background: var(--off-white) !important; transform: translateY(-1px); }
+        .mobile-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+        .mobile-toggle span { width: 24px; height: 2px; background: var(--white); transition: all 0.3s ease; }
+
+        .page-hero { padding: 10rem 4rem 5rem; position: relative; overflow: hidden; }
+        .page-hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(40,40,40,0.4) 0%, transparent 70%); pointer-events: none; }
+        .page-hero-content { position: relative; z-index: 2; max-width: 700px; }
+        .page-tag { display: inline-flex; align-items: center; gap: 0.75rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--light-gray); margin-bottom: 1.5rem; }
+        .page-tag::before { content: ''; width: 40px; height: 1px; background: var(--mid-gray); }
+        .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.12; letter-spacing: -0.02em; color: var(--pure-white); margin-bottom: 1.5rem; }
+        .page-hero h1 em { font-style: italic; color: var(--light-gray); }
+        .page-hero-sub { font-size: 1.1rem; line-height: 1.7; color: var(--light-gray); max-width: 560px; }
+        .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.08) 80%, transparent); }
+
+        .section-tag { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--mid-gray); margin-bottom: 1rem; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700; line-height: 1.15; color: var(--pure-white); }
+
+        /* --- EXPERIENCE OVERVIEW --- */
+        .experience-section { padding: 5rem 4rem; }
+        .experience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+        .experience-text p {
+            font-size: 1rem; line-height: 1.8; color: var(--light-gray); margin-bottom: 1.5rem;
+        }
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+        .stat-block {
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .stat-block .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem; font-weight: 700; color: var(--pure-white); line-height: 1;
+        }
+        .stat-block .stat-label {
+            font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--mid-gray); margin-top: 0.5rem;
+        }
+
+        /* --- STANDARDS --- */
+        .standards-section { padding: 5rem 4rem; background: var(--near-black); }
+        .standards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+            align-items: start;
+        }
+        .standard-block {
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: var(--black);
+        }
+        .standard-block h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; font-weight: 600; color: var(--pure-white); margin-bottom: 0.5rem;
+        }
+        .standard-block .standard-ref {
+            font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--mid-gray); margin-bottom: 1.2rem;
+        }
+        .standard-block p {
+            font-size: 0.92rem; line-height: 1.7; color: var(--light-gray);
+        }
+
+        /* --- GOVERNMENT EXPERIENCE --- */
+        .govt-section { padding: 5rem 4rem; }
+        .govt-content { margin-top: 3rem; max-width: 800px; }
+        .govt-content p {
+            font-size: 1rem; line-height: 1.8; color: var(--light-gray); margin-bottom: 1.5rem;
+        }
+        .project-types {
+            display: flex; flex-direction: column; gap: 1px;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06);
+            margin-top: 2.5rem;
+        }
+        .project-type {
+            background: var(--black); padding: 2rem 2.5rem;
+            display: grid; grid-template-columns: 200px 1fr; gap: 2rem;
+            align-items: start; transition: all 0.3s ease;
+        }
+        .project-type:hover { background: var(--near-black); }
+        .project-type h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem; font-weight: 600; color: var(--off-white);
+        }
+        .project-type p { font-size: 0.88rem; line-height: 1.65; color: var(--mid-gray); }
+
+        /* --- TIMELINE --- */
+        .timeline-section { padding: 5rem 4rem; background: var(--near-black); }
+        .timeline {
+            margin-top: 3rem;
+            max-width: 700px;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute; left: 0; top: 0; bottom: 0;
+            width: 1px; background: rgba(255,255,255,0.08);
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2.5rem;
+        }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item::before {
+            content: '';
+            position: absolute; left: -2.5rem; top: 0.4rem;
+            width: 7px; height: 7px;
+            background: var(--pure-white);
+            border-radius: 0;
+        }
+        .timeline-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; font-weight: 600; color: var(--pure-white);
+            margin-bottom: 0.3rem;
+        }
+        .timeline-role {
+            font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--mid-gray); margin-bottom: 0.6rem;
+        }
+        .timeline-desc {
+            font-size: 0.9rem; line-height: 1.65; color: var(--light-gray);
+        }
+
+        /* --- CTA --- */
+        .cta-section { padding: 7rem 4rem; text-align: center; position: relative; overflow: hidden; }
+        .cta-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%); pointer-events: none; }
+        .cta-section .section-title { max-width: 600px; margin: 0 auto 1.5rem; }
+        .cta-section p { color: var(--mid-gray); font-size: 1rem; line-height: 1.7; max-width: 500px; margin: 0 auto 2.5rem; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2.2rem; background: var(--pure-white); color: var(--black); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; text-decoration: none; letter-spacing: 0.04em; transition: all 0.3s ease; border: none; cursor: pointer; }
+        .btn-primary:hover { background: var(--off-white); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,0.08); }
+        .btn-primary svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
+        .btn-primary:hover svg { transform: translateX(3px); }
+
+        footer { padding: 3rem 4rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+        .footer-left { display: flex; align-items: center; gap: 2rem; }
+        .footer-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; color: var(--off-white); }
+        .footer-copy { font-size: 0.8rem; color: var(--mid-gray); }
+        .footer-links { display: flex; gap: 2rem; list-style: none; }
+        .footer-links a { font-size: 0.8rem; color: var(--mid-gray); text-decoration: none; transition: color 0.3s ease; }
+        .footer-links a:hover { color: var(--white); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1024px) {
+            nav { padding: 1.2rem 2rem; }
+            .page-hero, .experience-section, .standards-section, .govt-section, .timeline-section, .cta-section { padding-left: 2rem; padding-right: 2rem; }
+            footer { padding: 2rem; }
+            .experience-grid, .standards-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .project-type { grid-template-columns: 1fr; gap: 0.5rem; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; flex-direction: column; background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); padding: 1.5rem 2rem; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+            .nav-links.open { display: flex; }
+            .mobile-toggle { display: flex; }
+            .page-hero h1 { font-size: 2.2rem; }
+            .stat-row { grid-template-columns: 1fr; }
+            footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+            .footer-left { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="nav-logo">Pipeline <span>Consulting</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="services.html">Services</a></li>
+            <li><a href="expertise.html" class="active">Expertise</a></li>
+            <li><a href="sectors.html">Sectors</a></li>
+            <li><a href="mailto:little.shanem@gmail.com" class="nav-cta">Get in Touch</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </nav>
+
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <div class="page-tag">Our Expertise</div>
+            <h1>15+ years delivering <em>complex pipeline projects</em></h1>
+            <p class="page-hero-sub">Deep domain knowledge in oil and gas pipeline construction, facility civil works, and the Australian regulatory landscape — built through hands-on project delivery, not textbooks.</p>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- EXPERIENCE OVERVIEW -->
+    <section class="experience-section">
+        <div class="experience-grid reveal">
+            <div class="experience-text">
+                <div class="section-tag">Background</div>
+                <h2 class="section-title">Engineering-led project management</h2>
+                <p>Pipeline Consulting is built on a foundation of real project engineering experience. With over 15 years working across oil and gas pipeline construction, compressor stations, pumping stations, and live facility modifications, we bring a level of technical understanding that general project management firms simply cannot offer.</p>
+                <p>Our experience spans the full project lifecycle — from feasibility studies and front-end engineering through detailed design, procurement, construction management, commissioning, and handover. We've worked on both the owner and contractor side of the table, giving us a balanced perspective on how to drive outcomes while maintaining commercial fairness.</p>
+            </div>
+            <div>
+                <div class="stat-row">
+                    <div class="stat-block reveal">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-block reveal">
+                        <div class="stat-number">O&G</div>
+                        <div class="stat-label">Core Sector</div>
+                    </div>
+                    <div class="stat-block reveal">
+                        <div class="stat-number">2885</div>
+                        <div class="stat-label">AS Standard</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- STANDARDS & COMPLIANCE -->
+    <section class="standards-section">
+        <div class="reveal">
+            <div class="section-tag">Standards &amp; Compliance</div>
+            <h2 class="section-title">Regulatory knowledge that<br>protects your assets</h2>
+        </div>
+        <div class="standards-grid">
+            <div class="standard-block reveal">
+                <h3>AS 2885 Pipeline Systems</h3>
+                <div class="standard-ref">AS 2885.1 / .2 / .3 / .5</div>
+                <p>Comprehensive working knowledge of the AS 2885 suite covering design, welding, operation, and field pressure testing of pipeline systems. We apply these standards practically — understanding both the letter and the intent — to ensure your pipeline assets meet regulatory requirements throughout their lifecycle. Our experience includes safety management studies, threat analysis, and compliance assessments for both new construction and in-service pipeline assets.</p>
+            </div>
+            <div class="standard-block reveal">
+                <h3>Construction &amp; Welding Standards</h3>
+                <div class="standard-ref">AS 4645 / AS 1554 / API 1104</div>
+                <p>Deep familiarity with the construction and welding standards that underpin pipeline and facility works across Australia. From gas distribution networks under AS 4645 to structural welding requirements and API standards for pipeline girth welds, we ensure construction activities are performed and documented to the correct specifications. This includes review of welding procedures, welder qualifications, and NDT requirements.</p>
+            </div>
+            <div class="standard-block reveal">
+                <h3>Safety &amp; Environmental</h3>
+                <div class="standard-ref">AS/NZS 4801 / ISO 14001</div>
+                <p>Practical experience implementing safety management systems and environmental management plans within the pipeline construction environment. We understand the interface between general construction WHS requirements and the specific safety obligations that apply to works on and around high-pressure pipeline assets, including pipeline protection requirements during third-party construction activities.</p>
+            </div>
+            <div class="standard-block reveal">
+                <h3>Project Management Frameworks</h3>
+                <div class="standard-ref">PMBOK / PRINCE2</div>
+                <p>Our project management approach draws on established frameworks while being tailored to the specific demands of pipeline and energy infrastructure delivery. We don't apply generic PM methodology — we integrate best-practice project controls with the technical reality of constructing and managing pipeline assets in the Australian regulatory environment.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- GOVERNMENT PROJECTS EXPERIENCE -->
+    <section class="govt-section">
+        <div class="reveal">
+            <div class="section-tag">Government &amp; Public Infrastructure</div>
+            <h2 class="section-title">Proven experience on<br>major public works programs</h2>
+        </div>
+        <div class="govt-content reveal">
+            <p>Pipeline Consulting has delivered project management services on some of Australia's most significant government infrastructure programs. These projects involve the critical interface between new public infrastructure and existing high-pressure pipeline assets — requiring meticulous planning, deep standards knowledge, and the ability to coordinate across government agencies, Tier 1 contractors, and pipeline operators.</p>
+            <p>Our role on these programs has included pipeline protection design review, construction monitoring, safety management planning, and compliance oversight — ensuring that pipeline assets remain safe and operational throughout major construction works occurring in their vicinity.</p>
+        </div>
+        <div class="project-types reveal">
+            <div class="project-type">
+                <h4>Rail Level Crossing Removals</h4>
+                <p>Management of pipeline interface works during grade separation programs, including pipeline lowering, protection slab installation, and monitoring requirements. Coordination with rail alliance partners, pipeline licensees, and regulatory authorities to ensure pipeline integrity is maintained throughout structure construction directly above and adjacent to high-pressure pipeline assets.</p>
+            </div>
+            <div class="project-type">
+                <h4>Major Road Projects</h4>
+                <p>Project management of pipeline protection and relocation works associated with arterial road upgrades, freeway extensions, and intersection grade separations. This includes managing pipeline encasement works, designing third-party protection measures, and overseeing construction activities in live traffic environments where pipelines cross or run parallel to road corridors.</p>
+            </div>
+            <div class="project-type">
+                <h4>Utility Corridor &amp; Infrastructure Works</h4>
+                <p>Coordination of works where new utility corridors, drainage infrastructure, and public services intersect with existing pipeline easements. Our experience ensures that pipeline protection requirements are integrated into broader infrastructure designs from the earliest stages, reducing costly rework and construction delays.</p>
+            </div>
+            <div class="project-type">
+                <h4>Pipeline Protection &amp; Compliance</h4>
+                <p>Specialist oversight of AS 2885 compliance requirements for all third-party works within pipeline measurement lengths. Including safety management study facilitation, construction monitoring plans, and real-time compliance verification to protect the pipeline licensee's interests and public safety obligations on government-funded projects.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- CAREER TIMELINE -->
+    <section class="timeline-section">
+        <div class="reveal">
+            <div class="section-tag">Professional Journey</div>
+            <h2 class="section-title">Built on years of<br>hands-on delivery</h2>
+        </div>
+        <div class="timeline reveal">
+            <div class="timeline-item">
+                <div class="timeline-year">Present</div>
+                <div class="timeline-role">Principal — Pipeline Consulting</div>
+                <div class="timeline-desc">Providing independent project management and engineering consulting services to the oil and gas pipeline industry, government infrastructure programs, and energy sector clients across Australia.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2015 – Present</div>
+                <div class="timeline-role">Senior Project Engineer / Project Manager</div>
+                <div class="timeline-desc">Leading delivery of pipeline construction projects, facility modifications, and government infrastructure interface works. Direct experience managing multidisciplinary teams, contractor coordination, and regulatory compliance on high-value pipeline assets.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2010 – 2015</div>
+                <div class="timeline-role">Project Engineer</div>
+                <div class="timeline-desc">Hands-on project engineering across oil and gas pipeline construction, compressor station civil works, and brownfield facility modifications. Developed deep technical expertise in AS 2885 pipeline systems and construction methodologies.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Earlier Career</div>
+                <div class="timeline-role">Engineering &amp; Construction</div>
+                <div class="timeline-desc">Foundation years in mechanical engineering and construction, building the practical understanding of fabrication, welding, and field construction activities that underpins our project management approach today.</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="cta-section">
+        <div class="reveal">
+            <div class="section-tag">Work With Us</div>
+            <h2 class="section-title">Looking for pipeline<br>expertise you can trust?</h2>
+            <p>Whether it's a new pipeline build, a government infrastructure interface, or a brownfield facility upgrade — we bring the experience to deliver it right.</p>
+            <a href="mailto:little.shanem@gmail.com?subject=Expertise%20Enquiry%20-%20Pipeline%20Consulting" class="btn-primary">
+                Get in Touch
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-left">
+            <div class="footer-brand">Pipeline Consulting</div>
+            <span class="footer-copy">&copy; 2025 Pipeline Consulting. All rights reserved.</span>
+        </div>
+        <ul class="footer-links">
+            <li><a href="services.html">Services</a></li>
+            <li><a href="expertise.html">Expertise</a></li>
+            <li><a href="sectors.html">Sectors</a></li>
+            <li><a href="mailto:little.shanem@gmail.com">Contact</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        document.getElementById('mobileToggle').addEventListener('click', function() { document.getElementById('navLinks').classList.toggle('open'); });
+        document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('open'); }); });
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => { entries.forEach((entry, i) => { if (entry.isIntersecting) { setTimeout(() => { entry.target.classList.add('visible'); }, i * 100); observer.unobserve(entry.target); } }); }, { threshold: 0.15 });
+        reveals.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

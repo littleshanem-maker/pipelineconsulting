@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sectors | Pipeline Consulting</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a; --near-black: #141414; --dark-gray: #1e1e1e;
+            --mid-gray: #6b6b6b; --light-gray: #a8a8a8; --off-white: #e8e8e8;
+            --white: #f5f5f5; --pure-white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center; background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; letter-spacing: 0.02em; color: var(--pure-white); text-decoration: none; }
+        .nav-logo span { font-weight: 400; color: var(--light-gray); }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a { color: var(--light-gray); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: var(--pure-white); }
+        .nav-cta { padding: 0.6rem 1.6rem; background: var(--pure-white); color: var(--black) !important; font-weight: 700 !important; border: none; cursor: pointer; transition: all 0.3s ease; }
+        .nav-cta:hover { background: var(--off-white) !important; transform: translateY(-1px); }
+        .mobile-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+        .mobile-toggle span { width: 24px; height: 2px; background: var(--white); transition: all 0.3s ease; }
+
+        .page-hero { padding: 10rem 4rem 5rem; position: relative; overflow: hidden; }
+        .page-hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(40,40,40,0.4) 0%, transparent 70%); pointer-events: none; }
+        .page-hero-content { position: relative; z-index: 2; max-width: 700px; }
+        .page-tag { display: inline-flex; align-items: center; gap: 0.75rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--light-gray); margin-bottom: 1.5rem; }
+        .page-tag::before { content: ''; width: 40px; height: 1px; background: var(--mid-gray); }
+        .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.12; letter-spacing: -0.02em; color: var(--pure-white); margin-bottom: 1.5rem; }
+        .page-hero h1 em { font-style: italic; color: var(--light-gray); }
+        .page-hero-sub { font-size: 1.1rem; line-height: 1.7; color: var(--light-gray); max-width: 560px; }
+        .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.08) 80%, transparent); }
+
+        .section-tag { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--mid-gray); margin-bottom: 1rem; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700; line-height: 1.15; color: var(--pure-white); }
+
+        /* --- SECTOR BLOCKS --- */
+        .sector-section { padding: 5rem 4rem; }
+        .sector-section:nth-child(even) { background: var(--near-black); }
+        .sector-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        .sector-block-header .sector-icon {
+            font-size: 2.2rem;
+            opacity: 0.5;
+            margin-bottom: 1.2rem;
+        }
+        .sector-block-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem; font-weight: 600; color: var(--pure-white); margin-bottom: 0.5rem;
+        }
+        .sector-block-header .sector-sub {
+            font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--mid-gray); margin-bottom: 1.5rem;
+        }
+        .sector-block-header p {
+            font-size: 1rem; line-height: 1.8; color: var(--light-gray); margin-bottom: 1rem;
+        }
+        .scope-list {
+            margin-top: 2rem;
+        }
+        .scope-list h4 {
+            font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--mid-gray); margin-bottom: 1rem;
+        }
+        .scope-items {
+            display: flex; flex-direction: column; gap: 0;
+        }
+        .scope-item {
+            padding: 0.9rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.9rem; color: var(--off-white);
+            transition: all 0.3s ease;
+        }
+        .scope-item:first-child { border-top: 1px solid rgba(255,255,255,0.05); }
+        .scope-item:hover { padding-left: 0.75rem; }
+        .scope-item span { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid-gray); }
+
+        /* --- GOVERNMENT HIGHLIGHT --- */
+        .govt-highlight {
+            padding: 5rem 4rem;
+            background: var(--near-black);
+        }
+        .govt-highlight-inner {
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 3.5rem;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        .govt-highlight-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem; font-weight: 600; color: var(--pure-white); margin-bottom: 1.2rem;
+        }
+        .govt-highlight-text p {
+            font-size: 0.95rem; line-height: 1.75; color: var(--light-gray); margin-bottom: 1rem;
+        }
+        .govt-project-list {
+            display: flex; flex-direction: column; gap: 1.5rem;
+        }
+        .govt-project {
+            padding: 1.5rem;
+            border-left: 2px solid rgba(255,255,255,0.1);
+            transition: border-color 0.3s ease;
+        }
+        .govt-project:hover { border-color: rgba(255,255,255,0.3); }
+        .govt-project h4 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem; font-weight: 700; color: var(--off-white); margin-bottom: 0.4rem;
+        }
+        .govt-project p { font-size: 0.85rem; line-height: 1.6; color: var(--mid-gray); }
+
+        /* --- CTA --- */
+        .cta-section { padding: 7rem 4rem; text-align: center; position: relative; overflow: hidden; }
+        .cta-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%); pointer-events: none; }
+        .cta-section .section-title { max-width: 600px; margin: 0 auto 1.5rem; }
+        .cta-section p { color: var(--mid-gray); font-size: 1rem; line-height: 1.7; max-width: 500px; margin: 0 auto 2.5rem; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2.2rem; background: var(--pure-white); color: var(--black); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; text-decoration: none; letter-spacing: 0.04em; transition: all 0.3s ease; border: none; cursor: pointer; }
+        .btn-primary:hover { background: var(--off-white); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,0.08); }
+        .btn-primary svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
+        .btn-primary:hover svg { transform: translateX(3px); }
+
+        footer { padding: 3rem 4rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+        .footer-left { display: flex; align-items: center; gap: 2rem; }
+        .footer-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; color: var(--off-white); }
+        .footer-copy { font-size: 0.8rem; color: var(--mid-gray); }
+        .footer-links { display: flex; gap: 2rem; list-style: none; }
+        .footer-links a { font-size: 0.8rem; color: var(--mid-gray); text-decoration: none; transition: color 0.3s ease; }
+        .footer-links a:hover { color: var(--white); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1024px) {
+            nav { padding: 1.2rem 2rem; }
+            .page-hero, .sector-section, .govt-highlight, .cta-section { padding-left: 2rem; padding-right: 2rem; }
+            footer { padding: 2rem; }
+            .sector-block { grid-template-columns: 1fr; gap: 2.5rem; }
+            .govt-highlight-inner { grid-template-columns: 1fr; gap: 2.5rem; padding: 2.5rem; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; flex-direction: column; background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); padding: 1.5rem 2rem; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+            .nav-links.open { display: flex; }
+            .mobile-toggle { display: flex; }
+            .page-hero h1 { font-size: 2.2rem; }
+            footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+            .footer-left { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="nav-logo">Pipeline <span>Consulting</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="services.html">Services</a></li>
+            <li><a href="expertise.html">Expertise</a></li>
+            <li><a href="sectors.html" class="active">Sectors</a></li>
+            <li><a href="mailto:little.shanem@gmail.com" class="nav-cta">Get in Touch</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </nav>
+
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <div class="page-tag">Sectors We Serve</div>
+            <h1>Specialist delivery across <em>energy and infrastructure</em></h1>
+            <p class="page-hero-sub">Our project management and engineering expertise extends across the oil and gas value chain and into the government infrastructure programs that intersect with Australia's critical pipeline networks.</p>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- SECTOR 1: GAS TRANSMISSION -->
+    <div class="sector-section">
+        <div class="sector-block reveal">
+            <div class="sector-block-header">
+                <div class="sector-icon">⬡</div>
+                <h2>Gas Transmission Pipelines</h2>
+                <div class="sector-sub">High-Pressure Gas Infrastructure</div>
+                <p>Gas transmission pipelines form the backbone of Australia's energy network. We provide comprehensive project management services for the construction, modification, and integrity management of high-pressure gas pipeline systems, with deep expertise in AS 2885 compliance across all project phases.</p>
+                <p>From greenfield construction through to brownfield tie-ins on operational assets, our experience covers the full range of gas transmission works — including pipeline construction, valve station installations, metering facilities, and pigging infrastructure.</p>
+            </div>
+            <div class="scope-list">
+                <h4>Typical Scope of Services</h4>
+                <div class="scope-items">
+                    <div class="scope-item">Pipeline construction management <span>Greenfield</span></div>
+                    <div class="scope-item">Hot tap and tie-in coordination <span>Brownfield</span></div>
+                    <div class="scope-item">Valve station construction <span>Facilities</span></div>
+                    <div class="scope-item">Pipeline integrity management <span>Operations</span></div>
+                    <div class="scope-item">Hydrostatic testing oversight <span>Commissioning</span></div>
+                    <div class="scope-item">AS 2885 safety management studies <span>Compliance</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTOR 2: OIL & LIQUIDS -->
+    <div class="sector-section">
+        <div class="sector-block reveal">
+            <div class="sector-block-header">
+                <div class="sector-icon">◉</div>
+                <h2>Oil &amp; Liquids Pipelines</h2>
+                <div class="sector-sub">Crude &amp; Product Pipeline Systems</div>
+                <p>Our experience extends to the construction and management of crude oil, condensate, and product pipelines. Liquids pipeline systems present their own unique engineering challenges — from surge analysis and pump station design coordination through to leak detection and pipeline protection requirements.</p>
+                <p>We've managed projects across the liquids pipeline spectrum, including gathering systems, trunk lines, and delivery infrastructure connecting production facilities to processing plants and export terminals.</p>
+            </div>
+            <div class="scope-list">
+                <h4>Typical Scope of Services</h4>
+                <div class="scope-items">
+                    <div class="scope-item">Liquids pipeline construction <span>Greenfield</span></div>
+                    <div class="scope-item">Pump station civil works <span>Facilities</span></div>
+                    <div class="scope-item">Pipeline modifications <span>Brownfield</span></div>
+                    <div class="scope-item">Cathodic protection systems <span>Integrity</span></div>
+                    <div class="scope-item">Environmental management <span>Compliance</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTOR 3: PROCESSING FACILITIES -->
+    <div class="sector-section">
+        <div class="sector-block reveal">
+            <div class="sector-block-header">
+                <div class="sector-icon">⬢</div>
+                <h2>Processing Facilities</h2>
+                <div class="sector-sub">Compressor &amp; Pumping Stations</div>
+                <p>Compressor stations and pumping stations are the critical infrastructure that keeps pipeline systems operating at design throughput. We provide project management services for the civil, structural, mechanical, and electrical works associated with new facility construction and upgrades to existing facilities.</p>
+                <p>Our experience includes foundation works, equipment installation coordination, piping fabrication and erection, electrical and instrumentation fit-out, and the pre-commissioning and commissioning activities that bring these facilities into safe operation.</p>
+            </div>
+            <div class="scope-list">
+                <h4>Typical Scope of Services</h4>
+                <div class="scope-items">
+                    <div class="scope-item">Civil and structural works <span>Construction</span></div>
+                    <div class="scope-item">Mechanical equipment installation <span>Installation</span></div>
+                    <div class="scope-item">Piping fabrication and erection <span>Mechanical</span></div>
+                    <div class="scope-item">E&I fit-out coordination <span>Electrical</span></div>
+                    <div class="scope-item">Pre-commissioning and commissioning <span>Startup</span></div>
+                    <div class="scope-item">Facility upgrades and modifications <span>Brownfield</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTOR 4: LIVE OPERATIONS -->
+    <div class="sector-section">
+        <div class="sector-block reveal">
+            <div class="sector-block-header">
+                <div class="sector-icon">◈</div>
+                <h2>Live Facility Operations</h2>
+                <div class="sector-sub">Brownfield &amp; Operational Assets</div>
+                <p>Working on live, operational pipeline assets demands a different level of planning and safety management. We specialise in managing construction and modification works on operational facilities where production must continue — requiring meticulous risk assessment, permit-to-work systems, and coordination with operations teams.</p>
+                <p>Our experience managing works in live environments means we understand the practical challenges of hot work adjacent to hydrocarbon-containing equipment, isolation management, and maintaining safe separation distances while delivering construction activities efficiently.</p>
+            </div>
+            <div class="scope-list">
+                <h4>Typical Scope of Services</h4>
+                <div class="scope-items">
+                    <div class="scope-item">Live pipeline modifications <span>Operations</span></div>
+                    <div class="scope-item">Hot tapping and stoppling <span>Specialist</span></div>
+                    <div class="scope-item">Isolation management <span>Safety</span></div>
+                    <div class="scope-item">Brownfield construction management <span>Execution</span></div>
+                    <div class="scope-item">Shutdown planning and coordination <span>Planning</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- GOVERNMENT INFRASTRUCTURE HIGHLIGHT -->
+    <div class="govt-highlight">
+        <div class="govt-highlight-inner reveal">
+            <div class="govt-highlight-text">
+                <div class="section-tag" style="margin-bottom: 1rem;">Government &amp; Public Infrastructure</div>
+                <h2>Where pipelines meet public works</h2>
+                <p>Australia's expanding infrastructure programs — from rail upgrades to freeway extensions — increasingly intersect with existing pipeline corridors. These interfaces require specialist project management that understands both the construction demands of public infrastructure and the safety obligations of pipeline protection under AS 2885.</p>
+                <p>Pipeline Consulting provides the bridge between government project teams, Tier 1 contractors, and pipeline operators — ensuring that pipeline assets are protected and that infrastructure programs are not delayed by pipeline interface issues.</p>
+            </div>
+            <div class="govt-project-list">
+                <div class="govt-project">
+                    <h4>Rail Level Crossing Removals</h4>
+                    <p>Pipeline protection and relocation works during grade separation construction, including lowering, encasement, and real-time monitoring of high-pressure pipeline assets beneath new rail infrastructure.</p>
+                </div>
+                <div class="govt-project">
+                    <h4>Major Road Upgrades</h4>
+                    <p>Managing the pipeline interface on arterial road duplications, freeway extensions, and interchange construction — coordinating third-party protection measures with road construction scheduling.</p>
+                </div>
+                <div class="govt-project">
+                    <h4>Urban Development Corridors</h4>
+                    <p>Overseeing pipeline compliance requirements as greenfield development encroaches on established pipeline easements, ensuring AS 2885 measurement length obligations are maintained.</p>
+                </div>
+                <div class="govt-project">
+                    <h4>Utility Relocations</h4>
+                    <p>Project management of pipeline relocations and protection works triggered by government utility corridor upgrades, water infrastructure projects, and drainage works.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <section class="cta-section">
+        <div class="reveal">
+            <div class="section-tag">Start a Conversation</div>
+            <h2 class="section-title">Have a project in one<br>of these sectors?</h2>
+            <p>Get in touch to discuss how Pipeline Consulting can support your next pipeline, facility, or infrastructure project.</p>
+            <a href="mailto:little.shanem@gmail.com?subject=Sector%20Enquiry%20-%20Pipeline%20Consulting" class="btn-primary">
+                Get in Touch
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-left">
+            <div class="footer-brand">Pipeline Consulting</div>
+            <span class="footer-copy">&copy; 2025 Pipeline Consulting. All rights reserved.</span>
+        </div>
+        <ul class="footer-links">
+            <li><a href="services.html">Services</a></li>
+            <li><a href="expertise.html">Expertise</a></li>
+            <li><a href="sectors.html">Sectors</a></li>
+            <li><a href="mailto:little.shanem@gmail.com">Contact</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        document.getElementById('mobileToggle').addEventListener('click', function() { document.getElementById('navLinks').classList.toggle('open'); });
+        document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('open'); }); });
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => { entries.forEach((entry, i) => { if (entry.isIntersecting) { setTimeout(() => { entry.target.classList.add('visible'); }, i * 100); observer.unobserve(entry.target); } }); }, { threshold: 0.15 });
+        reveals.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

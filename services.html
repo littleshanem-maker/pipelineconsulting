@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | Pipeline Consulting</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --near-black: #141414;
+            --dark-gray: #1e1e1e;
+            --mid-gray: #6b6b6b;
+            --light-gray: #a8a8a8;
+            --off-white: #e8e8e8;
+            --white: #f5f5f5;
+            --pure-white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- NAV --- */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 1.5rem 4rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; font-weight: 700; letter-spacing: 0.02em; color: var(--pure-white);
+            text-decoration: none;
+        }
+        .nav-logo span { font-weight: 400; color: var(--light-gray); }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            color: var(--light-gray); text-decoration: none; font-size: 0.85rem;
+            font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--pure-white); }
+        .nav-links a.active { color: var(--pure-white); }
+        .nav-cta {
+            padding: 0.6rem 1.6rem; background: var(--pure-white);
+            color: var(--black) !important; font-weight: 700 !important;
+            border: none; cursor: pointer; transition: all 0.3s ease;
+        }
+        .nav-cta:hover { background: var(--off-white) !important; transform: translateY(-1px); }
+        .mobile-toggle {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; background: none; border: none; padding: 4px;
+        }
+        .mobile-toggle span { width: 24px; height: 2px; background: var(--white); transition: all 0.3s ease; }
+
+        /* --- PAGE HERO --- */
+        .page-hero {
+            padding: 10rem 4rem 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-hero::before {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(40,40,40,0.4) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .page-hero-content { position: relative; z-index: 2; max-width: 700px; }
+        .page-tag {
+            display: inline-flex; align-items: center; gap: 0.75rem;
+            font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--light-gray); margin-bottom: 1.5rem;
+        }
+        .page-tag::before { content: ''; width: 40px; height: 1px; background: var(--mid-gray); }
+        .page-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.4rem, 5vw, 3.5rem);
+            font-weight: 700; line-height: 1.12; letter-spacing: -0.02em;
+            color: var(--pure-white); margin-bottom: 1.5rem;
+        }
+        .page-hero h1 em { font-style: italic; color: var(--light-gray); }
+        .page-hero-sub {
+            font-size: 1.1rem; line-height: 1.7; color: var(--light-gray); max-width: 560px;
+        }
+
+        /* --- DIVIDER --- */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.08) 80%, transparent);
+        }
+
+        /* --- CONTENT SECTIONS --- */
+        .section-tag {
+            font-size: 0.7rem; font-weight: 500; letter-spacing: 0.25em;
+            text-transform: uppercase; color: var(--mid-gray); margin-bottom: 1rem;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 700; line-height: 1.15; color: var(--pure-white);
+        }
+
+        /* --- SERVICE DETAIL BLOCKS --- */
+        .service-detail-section {
+            padding: 5rem 4rem;
+        }
+        .service-detail-section:nth-child(even) {
+            background: var(--near-black);
+        }
+        .service-detail {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 4rem;
+            max-width: 1100px;
+            align-items: start;
+        }
+        .service-detail-label {
+            position: sticky;
+            top: 6rem;
+        }
+        .service-detail-label .service-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.06);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        .service-detail-label h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--pure-white);
+            margin-bottom: 0.75rem;
+        }
+        .service-detail-label .label-tag {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+        }
+        .service-detail-body p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+        .service-detail-body p:last-child { margin-bottom: 0; }
+        .deliverables {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .deliverables h4 {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+            margin-bottom: 1rem;
+        }
+        .deliverable-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .deliverable-item {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.82rem;
+            color: var(--off-white);
+        }
+
+        /* --- CTA --- */
+        .cta-section {
+            padding: 7rem 4rem;
+            background: var(--near-black);
+            text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .cta-section .section-title { max-width: 600px; margin: 0 auto 1.5rem; }
+        .cta-section p {
+            color: var(--mid-gray); font-size: 1rem; line-height: 1.7;
+            max-width: 500px; margin: 0 auto 2.5rem;
+        }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 1rem 2.2rem; background: var(--pure-white); color: var(--black);
+            font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700;
+            text-decoration: none; letter-spacing: 0.04em; transition: all 0.3s ease;
+            border: none; cursor: pointer;
+        }
+        .btn-primary:hover {
+            background: var(--off-white); transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,255,255,0.08);
+        }
+        .btn-primary svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
+        .btn-primary:hover svg { transform: translateX(3px); }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 3rem 4rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .footer-left { display: flex; align-items: center; gap: 2rem; }
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700; font-size: 1rem; color: var(--off-white);
+        }
+        .footer-copy { font-size: 0.8rem; color: var(--mid-gray); }
+        .footer-links { display: flex; gap: 2rem; list-style: none; }
+        .footer-links a {
+            font-size: 0.8rem; color: var(--mid-gray); text-decoration: none; transition: color 0.3s ease;
+        }
+        .footer-links a:hover { color: var(--white); }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            nav { padding: 1.2rem 2rem; }
+            .page-hero, .service-detail-section, .cta-section { padding-left: 2rem; padding-right: 2rem; }
+            footer { padding: 2rem; }
+            .service-detail { grid-template-columns: 1fr; gap: 2rem; }
+            .service-detail-label { position: static; }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; position: absolute; top: 100%; left: 0; width: 100%;
+                flex-direction: column; background: rgba(10,10,10,0.95);
+                backdrop-filter: blur(20px); padding: 1.5rem 2rem; gap: 1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.06);
+            }
+            .nav-links.open { display: flex; }
+            .mobile-toggle { display: flex; }
+            .page-hero h1 { font-size: 2.2rem; }
+            footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+            .footer-left { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="nav-logo">Pipeline <span>Consulting</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="services.html" class="active">Services</a></li>
+            <li><a href="expertise.html">Expertise</a></li>
+            <li><a href="sectors.html">Sectors</a></li>
+            <li><a href="mailto:little.shanem@gmail.com" class="nav-cta">Get in Touch</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <div class="page-tag">Our Services</div>
+            <h1>Comprehensive project management for <em>critical energy assets</em></h1>
+            <p class="page-hero-sub">From initial feasibility through to commissioning and handover, Pipeline Consulting delivers the full spectrum of project management and engineering services your pipeline and facility projects require.</p>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- SERVICE 1 -->
+    <div class="service-detail-section">
+        <div class="service-detail reveal">
+            <div class="service-detail-label">
+                <div class="service-number">01</div>
+                <h2>Quality Management</h2>
+                <div class="label-tag">Assurance &amp; Control</div>
+            </div>
+            <div class="service-detail-body">
+                <p>Our quality management services ensure every aspect of your project meets the stringent requirements of Australian pipeline standards and your organisation's own quality frameworks. We establish robust QA/QC systems from the outset, providing the documented assurance that regulators, asset owners, and stakeholders demand.</p>
+                <p>We develop project-specific quality management plans, inspection and test plans, and hold-point matrices aligned with AS 2885 and relevant construction standards. Our approach is practical and field-proven — designed to catch non-conformances early rather than generating paperwork for its own sake.</p>
+                <div class="deliverables">
+                    <h4>Key Deliverables</h4>
+                    <div class="deliverable-list">
+                        <span class="deliverable-item">Quality Management Plans</span>
+                        <span class="deliverable-item">Inspection &amp; Test Plans</span>
+                        <span class="deliverable-item">NCR Management</span>
+                        <span class="deliverable-item">Weld Procedure Review</span>
+                        <span class="deliverable-item">Supplier Auditing</span>
+                        <span class="deliverable-item">As-Built Documentation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICE 2 -->
+    <div class="service-detail-section">
+        <div class="service-detail reveal">
+            <div class="service-detail-label">
+                <div class="service-number">02</div>
+                <h2>Cost Control</h2>
+                <div class="label-tag">Budget &amp; Forecasting</div>
+            </div>
+            <div class="service-detail-body">
+                <p>Rigorous cost management is the backbone of successful project delivery. We provide transparent, data-driven cost control systems that give project sponsors and asset owners clear visibility of financial performance at every stage.</p>
+                <p>From developing detailed cost estimates during front-end planning through to managing variations, progress claims, and final account reconciliation during execution, we ensure your budget is protected. Our approach integrates earned value management principles with practical, field-level cost tracking that reflects the realities of pipeline and facility construction.</p>
+                <div class="deliverables">
+                    <h4>Key Deliverables</h4>
+                    <div class="deliverable-list">
+                        <span class="deliverable-item">Cost Estimates &amp; Budgets</span>
+                        <span class="deliverable-item">Progress Claims Assessment</span>
+                        <span class="deliverable-item">Variation Management</span>
+                        <span class="deliverable-item">Earned Value Reporting</span>
+                        <span class="deliverable-item">Cash Flow Forecasting</span>
+                        <span class="deliverable-item">Final Account Closeout</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICE 3 -->
+    <div class="service-detail-section">
+        <div class="service-detail reveal">
+            <div class="service-detail-label">
+                <div class="service-number">03</div>
+                <h2>Schedule Management</h2>
+                <div class="label-tag">Planning &amp; Delivery</div>
+            </div>
+            <div class="service-detail-body">
+                <p>Pipeline construction is schedule-intensive — with environmental windows, landowner access agreements, welding spreads, and hydrotesting all needing to align. We develop and manage detailed construction schedules that reflect the true sequencing and interdependencies of pipeline and facility works.</p>
+                <p>Our schedule management goes beyond Gantt charts. We provide critical path analysis, resource-loaded scheduling, and proactive lookahead planning that keeps your project team focused on what matters most. When delays arise, we identify recovery strategies and quantify impacts clearly.</p>
+                <div class="deliverables">
+                    <h4>Key Deliverables</h4>
+                    <div class="deliverable-list">
+                        <span class="deliverable-item">Baseline Schedules</span>
+                        <span class="deliverable-item">Critical Path Analysis</span>
+                        <span class="deliverable-item">3-Week Lookaheads</span>
+                        <span class="deliverable-item">Delay Analysis</span>
+                        <span class="deliverable-item">Resource Loading</span>
+                        <span class="deliverable-item">Milestone Tracking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICE 4 -->
+    <div class="service-detail-section">
+        <div class="service-detail reveal">
+            <div class="service-detail-label">
+                <div class="service-number">04</div>
+                <h2>Risk &amp; Safety Management</h2>
+                <div class="label-tag">Mitigation &amp; Compliance</div>
+            </div>
+            <div class="service-detail-body">
+                <p>Working on and around high-pressure pipeline infrastructure demands a safety-first approach integrated into every decision. We provide systematic risk identification, assessment, and mitigation planning aligned with AS 2885 safety management requirements and your organisation's HSE frameworks.</p>
+                <p>Our experience managing works on live, operational assets means we understand the real-world safety challenges — from hot work permits adjacent to gas transmission lines to managing construction traffic over buried pipelines. We develop practical safety management plans that construction teams can actually implement in the field.</p>
+                <div class="deliverables">
+                    <h4>Key Deliverables</h4>
+                    <div class="deliverable-list">
+                        <span class="deliverable-item">Risk Registers</span>
+                        <span class="deliverable-item">Safety Management Studies</span>
+                        <span class="deliverable-item">HAZOP Facilitation</span>
+                        <span class="deliverable-item">Construction Safety Plans</span>
+                        <span class="deliverable-item">Permit-to-Work Systems</span>
+                        <span class="deliverable-item">Incident Investigation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICE 5 -->
+    <div class="service-detail-section">
+        <div class="service-detail reveal">
+            <div class="service-detail-label">
+                <div class="service-number">05</div>
+                <h2>Stakeholder Management</h2>
+                <div class="label-tag">Communication &amp; Alignment</div>
+            </div>
+            <div class="service-detail-body">
+                <p>Pipeline projects involve a complex web of stakeholders — asset owners, construction contractors, regulatory bodies, landowners, local councils, and government agencies. Effective stakeholder management is often the difference between a project that flows and one that stalls.</p>
+                <p>We bring structured stakeholder engagement processes, regular reporting cadences, and the ability to communicate technical pipeline information in terms that non-technical stakeholders can understand and act on. Our experience across both owner and contractor organisations gives us a balanced perspective that builds trust.</p>
+                <div class="deliverables">
+                    <h4>Key Deliverables</h4>
+                    <div class="deliverable-list">
+                        <span class="deliverable-item">Stakeholder Registers</span>
+                        <span class="deliverable-item">Communication Plans</span>
+                        <span class="deliverable-item">Progress Reporting</span>
+                        <span class="deliverable-item">Interface Coordination</span>
+                        <span class="deliverable-item">Regulatory Liaison</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICE 6 -->
+    <div class="service-detail-section">
+        <div class="service-detail reveal">
+            <div class="service-detail-label">
+                <div class="service-number">06</div>
+                <h2>Project Engineering</h2>
+                <div class="label-tag">Technical Oversight</div>
+            </div>
+            <div class="service-detail-body">
+                <p>Pipeline Consulting provides hands-on project engineering support across all disciplines — mechanical, civil, electrical, and instrumentation. We review designs, coordinate engineering deliverables, manage technical queries, and provide construction support that bridges the gap between the drawing board and the field.</p>
+                <p>With over 15 years of direct project engineering experience, we bring the technical depth to interrogate designs, identify constructability issues early, and ensure that engineering deliverables are complete, accurate, and issued on time to support construction activities.</p>
+                <div class="deliverables">
+                    <h4>Key Deliverables</h4>
+                    <div class="deliverable-list">
+                        <span class="deliverable-item">Design Reviews</span>
+                        <span class="deliverable-item">Technical Query Management</span>
+                        <span class="deliverable-item">Constructability Reviews</span>
+                        <span class="deliverable-item">Engineering Coordination</span>
+                        <span class="deliverable-item">Commissioning Support</span>
+                        <span class="deliverable-item">Handover Documentation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <section class="cta-section">
+        <div class="reveal">
+            <div class="section-tag">Start a Conversation</div>
+            <h2 class="section-title">Need project management<br>support on your next project?</h2>
+            <p>Get in touch to discuss how Pipeline Consulting can support your pipeline or facility project from planning through to delivery.</p>
+            <a href="mailto:little.shanem@gmail.com?subject=Services%20Enquiry%20-%20Pipeline%20Consulting" class="btn-primary">
+                Get in Touch
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-left">
+            <div class="footer-brand">Pipeline Consulting</div>
+            <span class="footer-copy">&copy; 2025 Pipeline Consulting. All rights reserved.</span>
+        </div>
+        <ul class="footer-links">
+            <li><a href="services.html">Services</a></li>
+            <li><a href="expertise.html">Expertise</a></li>
+            <li><a href="sectors.html">Sectors</a></li>
+            <li><a href="mailto:little.shanem@gmail.com">Contact</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        document.getElementById('mobileToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('open'); });
+        });
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => { entry.target.classList.add('visible'); }, i * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+        reveals.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
